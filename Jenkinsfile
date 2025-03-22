@@ -2,7 +2,7 @@ pipeline {
     agent any
     environment {
         IMAGE = "spring-petclinic"
-        DOCKERHUB_USER = maryann123456789
+        DOCKERHUB_USER = 'maryann123456789'
     }
 
     stages {
