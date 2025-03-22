@@ -5,12 +5,12 @@ pipeline {
         DOCKERHUB_USER = 'maryann123456789'
     }
 
-    stages {
-        stage('Clone Repository') {
-            steps {
-                git 'https://github.com/Mary-Annorans/spring-petclinic.git'
-            }
-        }
+    stage('Checkout') {
+    steps {
+        checkout scm
+    }
+}
+
         stage('Build with Maven') {
             steps {
                 sh 'mvn clean package'
