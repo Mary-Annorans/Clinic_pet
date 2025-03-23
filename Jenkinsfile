@@ -1,47 +1,43 @@
 pipeline {
     agent any
 
-    environment {
-        IMAGE = 'spring-petclinic'
-        DOCKERHUB_USER = 'maryann123456789'  // Replace with your actual DockerHub username
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                checkout scm
+                git 'https://github.com/Mary-Annorans/Clinic_pet.git'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean package'
+                script {
+                    docker.image('maven:3.9.9').inside {
+                        sh 'mvn clean package'
+                    }
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t $IMAGE .'
+                sh 'docker build -t clinic_pet_image .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh '''
-                    docker stop petclinic || true
-                    docker rm petclinic || true
-                    docker run -d --name petclinic -p 8081:8080 $IMAGE
-                '''
+                sh 'docker run -d -p 8080:8080 --name clinic_pet_container clinic_pet_image'
             }
         }
     }
 
     post {
-        success {
-            echo '✅ Build and Deployment Successful!'
-        }
         failure {
             echo '❌ Build Failed!'
         }
+        success {
+            echo '✅ Build Succeeded!'
+        }
     }
 }
+
