@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Mary-Annorans/Clinic_pet.git'
+                git branch: 'main', url: 'https://github.com/Mary-Annorans/Clinic_pet.git'
             }
         }
 
